@@ -1,3 +1,6 @@
-/**
- * Created by vkuzbida on 27.05.2016.
- */
+import { bootstrap } from 'angular2/platform/browser';
+import { AppComponent } from './app.component';
+
+bootstrap(AppComponent, [])
+    .then(success => console.log(`Bootstrap success`))
+    .catch(error => console.log(error));
