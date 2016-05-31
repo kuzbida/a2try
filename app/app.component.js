@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'rxjs/Rx'], function(exports_1, context_1) {
+System.register(['angular2/core', './hero-detail.component', './hero.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,25 +10,41 @@ System.register(['angular2/core', 'rxjs/Rx'], function(exports_1, context_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, hero_detail_component_1, hero_service_1;
     var AppComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (_1) {}],
+            function (hero_detail_component_1_1) {
+                hero_detail_component_1 = hero_detail_component_1_1;
+            },
+            function (hero_service_1_1) {
+                hero_service_1 = hero_service_1_1;
+            }],
         execute: function() {
             AppComponent = (function () {
-                function AppComponent() {
+                function AppComponent(heroService) {
+                    this.heroService = heroService;
+                    this.title = 'Tour of Heroes';
                 }
+                AppComponent.prototype.onSelect = function (hero) { this.selectedHero = hero; };
+                AppComponent.prototype.getHeroes = function () {
+                    var _this = this;
+                    this.heroService.getHeroes().then(function (heroes) { return _this.heroes = heroes; });
+                };
+                AppComponent.prototype.ngOnInit = function () {
+                    this.getHeroes();
+                };
                 AppComponent = __decorate([
-                    // load the full rxjs
                     core_1.Component({
                         selector: 'my-app',
-                        template: '<h1>My First Angular 2 App</h1>'
+                        directives: [hero_detail_component_1.HeroDetailComponent],
+                        providers: [hero_service_1.HeroService],
+                        template: "\n      <h1>{{title}}</h1>\n      <h2>My Heroes</h2>\n        <ul class=\"heroes\">\n          <li *ngFor=\"#hero of heroes\"\n            (click)=\"onSelect(hero)\"\n            [class.selected]=\"hero === selectedHero\">\n            <span class=\"badge\">{{hero.id}}</span> {{hero.name}}\n          </li>\n        </ul>\n        <my-hero-detail [hero]=\"selectedHero\"></my-hero-detail>\n      "
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [hero_service_1.HeroService])
                 ], AppComponent);
                 return AppComponent;
             }());
